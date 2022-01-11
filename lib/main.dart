@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(App());
 }
 
+TextStyle baseTextStyle = TextStyle(
+  fontSize: 14
+);
+
 ButtonStyle baseButtonStyle = ButtonStyle(
+  textStyle: MaterialStateProperty.all<TextStyle>(baseTextStyle),
   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
     RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4),
@@ -18,13 +22,21 @@ ButtonStyle baseButtonStyle = ButtonStyle(
 );
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key ?key}) : super(key:  key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.red,
+        fontFamily: 'OpenSans',
+        textTheme: TextTheme(
+          bodyText2: baseTextStyle,
+          headline1: baseTextStyle.copyWith(
+            fontSize: 28,
+            fontWeight: FontWeight.bold
+          )
+        ),
         textButtonTheme: TextButtonThemeData(
           style: baseButtonStyle
         ),
@@ -41,30 +53,43 @@ class App extends StatelessWidget {
           )
         )
       ),
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                child: Text("Hello world"),
-                onPressed: () {},
-              ),
-              SizedBox(height: 20),
-              OutlinedButton(
-                child: Text("Hellow !"),
-                onPressed: (){}, 
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                child: Text("hello world !"),
-                autofocus: false,
-                onPressed: () {},
-              ),
-            ],
-          )
-        ),
+      home: Home(),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Hello World !"),
+            SizedBox(height: 20),
+            Text("Hello World !", style: Theme.of(context).textTheme.headline1),
+            SizedBox(height: 20),
+            TextButton(
+              child: Text("Hello world"),
+              onPressed: () {},
+            ),
+            SizedBox(height: 20),
+            OutlinedButton(
+              child: Text("Hellow !"),
+              onPressed: (){}, 
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              child: Text("hello world !"),
+              autofocus: false,
+              onPressed: () {},
+            ),
+          ],
+        )
       ),
     );
   }
