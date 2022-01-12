@@ -5,21 +5,40 @@ void main() {
   runApp(App());
 }
 
-TextStyle baseTextStyle = TextStyle(
-  fontSize: 14
-);
+class BaseTextStyle {
+  static TextStyle bodyText2 = TextStyle(
+    fontSize: 14
+  );
 
-ButtonStyle baseButtonStyle = ButtonStyle(
-  textStyle: MaterialStateProperty.all<TextStyle>(baseTextStyle),
-  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(4),
+  static TextStyle headline1 = BaseTextStyle.bodyText2.copyWith(
+    fontSize: 28,
+    fontWeight: FontWeight.bold
+  );
+}
+
+class BaseButtonStyle {
+  static ButtonStyle base = ButtonStyle(
+    textStyle: MaterialStateProperty.all<TextStyle>(BaseTextStyle.bodyText2),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      )
+    ),
+    padding: MaterialStateProperty.all<EdgeInsets>(
+      EdgeInsets.fromLTRB(28, 20, 28, 20)
     )
-  ),
-  padding: MaterialStateProperty.all<EdgeInsets>(
-    EdgeInsets.fromLTRB(28, 20, 28, 20)
-  )
-);
+  );
+
+  static ButtonStyle elevated = BaseButtonStyle.base.copyWith(
+    elevation: MaterialStateProperty.all(0),
+  );
+
+  static ButtonStyle outlined = BaseButtonStyle.base.copyWith(
+    side: MaterialStateProperty.all<BorderSide>(
+      BorderSide(color: Colors.red, width: 1.0, style: BorderStyle.solid)
+    )
+  );
+}
 
 class App extends StatelessWidget {
   const App({Key ?key}) : super(key:  key);
@@ -27,30 +46,48 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        fontFamily: 'OpenSans',
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+        scaffoldBackgroundColor: Colors.black87,
+        primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          bodyText2: baseTextStyle,
-          headline1: baseTextStyle.copyWith(
-            fontSize: 28,
-            fontWeight: FontWeight.bold
-          )
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: baseButtonStyle
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: baseButtonStyle.copyWith(
-            side: MaterialStateProperty.all<BorderSide>(
-              BorderSide(color: Colors.red, width: 1.0, style: BorderStyle.solid)
-            )
+          bodyText2: BaseTextStyle.bodyText2.copyWith(
+            color: Colors.white
+          ),
+          headline1: BaseTextStyle.headline1.copyWith(
+            color: Colors.white
           )
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: baseButtonStyle.copyWith(
-            elevation: MaterialStateProperty.all(0),
+          style: BaseButtonStyle.elevated
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: BaseButtonStyle.outlined.copyWith(
+            side: MaterialStateProperty.all<BorderSide>(
+              BorderSide(color: Colors.blue)
+            )
           )
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: BaseButtonStyle.base
+        )
+      ),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.red,
+        fontFamily: 'OpenSans',
+        textTheme: TextTheme(
+          bodyText2: BaseTextStyle.bodyText2,
+          headline1: BaseTextStyle.headline1
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: BaseButtonStyle.base
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: BaseButtonStyle.outlined
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: BaseButtonStyle.elevated
         )
       ),
       home: Home(),
